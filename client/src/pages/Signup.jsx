@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../utils/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export default function Signup() {
   const [role, setRole] = useState("user");
 
   const signup = async () => {
-    await axios.post("/api/auth/signup", {
+    await api.post("/api/auth/signup", {
       email,
       password,
       role,
