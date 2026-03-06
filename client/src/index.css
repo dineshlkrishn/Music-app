@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    /* Tailwind doesn't have your specific beige gradient by default, 
+       so we keep it or use @apply for the text color */
+    @apply bg-white;
+    background-color: white;
+
+    color: #060708;
+  }
+}
+
+/* reusable card */
+.card {
+  @apply bg-white rounded-[20px] shadow-[0_10px_25px_rgba(0,0,0,0.08)];
+}
+
+/* scroll lists */
+.scroll-x {
+  @apply flex gap-4 overflow-x-auto pb-1;
+}
+
+.scroll-x::-webkit-scrollbar {
+  @apply hidden;
+}
+
+/* section headings */
+.section-title {
+  @apply text-[20px] font-semibold mb-[14px];
+}
