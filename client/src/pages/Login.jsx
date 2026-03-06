@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { loginUser, createUser } from "../utils/authStorage";
 import { useNavigate } from "react-router-dom";
+import api from "../utils/api";
 
 export default function Login() {
   const nav = useNavigate();
@@ -11,46 +11,52 @@ export default function Login() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
-    if (mode === "login") {
-      const user = loginUser(email, password);
+    try {
+      if (mode === "login") {
+        const { data } = await api.post("/api/auth/login", { email, password });
 
-      if (!user) {
-        setMessage("Invalid email or password");
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            email: data.email,
+            role: data.role,
+            token: data.token,
+          })
+        );
+
+        nav("/home");
         return;
       }
 
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      nav("/home");
-    }
-
-    if (mode === "signup") {
-      const res = createUser(email, password);
-
-      if (res !== "success") {
-        setMessage(res);
+      if (mode === "signup") {
+        await api.post("/api/auth/signup", { email, password, role: "user" });
+        setMessage("Account created! Please login.");
+        setMode("login");
         return;
       }
 
-      setMessage("Account created! Please login.");
-      setMode("login");
-    }
-
-    if (mode === "forgot") {
-      setMessage("Password reset link sent (mock).");
+      if (mode === "forgot") {
+        setMessage("Password reset link sent (mock).");
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.error || "Request failed. Please try again.";
+      setMessage(errorMessage);
     }
   };
 
   const googleLogin = () => {
-    const user = { email: "google@soundson.com" };
+    const user = { email: "google@soundson.com", role: "user" };
     localStorage.setItem("currentUser", JSON.stringify(user));
     nav("/home");
   };
 
   const facebookLogin = () => {
-    const user = { email: "facebook@soundson.com" };
+    const user = { email: "facebook@soundson.com", role: "user" };
     localStorage.setItem("currentUser", JSON.stringify(user));
     nav("/home");
   };
@@ -58,7 +64,6 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="bg-white w-96 p-8 rounded-3xl shadow-xl">
-        {/* LOGO */}
         <div className="flex flex-col items-center mb-6">
           <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
             S

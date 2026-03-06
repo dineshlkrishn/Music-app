@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/Server.js",
     "server": "node server/Server.js",
-    "dev": "concurrently \"npm run server\""
+    "dev": "node server/Server.js"
   },
   "keywords": [],
   "author": "Ives van Hoorne",

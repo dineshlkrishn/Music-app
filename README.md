@@ -1,10 +1,37 @@
-# Node.js template
+# Music App
 
-This is a Node.js project.
+This repository contains:
+- **Client**: React app under `client/`
+- **Server**: Express API under `server/`
 
-Add your [configuration](https://codesandbox.io/docs/projects/learn/setting-up/tasks) to optimize it for [CodeSandbox](https://codesandbox.io/p/dashboard).
+## Local run (client + server together)
 
-## Resources
+```bash
+npm install
+npm --prefix client install
+npm --prefix client run build
+npm start
+```
 
-- [CodeSandbox — Docs](https://codesandbox.io/docs/learn)
-- [CodeSandbox — Discord](https://discord.gg/Ggarp3pX5H)
+Open:
+- `http://localhost:5000/` → React client
+- `http://localhost:5000/api/test` → API health
+
+## API endpoints used by client
+
+- `POST /api/auth/signup`
+- `POST /api/auth/login`
+- `GET /api/songs`
+- `POST /api/songs/upload`
+
+## Important: GitHub Pages limitation
+
+GitHub Pages can host only static files. It **cannot run the Node/Express API server**.
+
+If your frontend is hosted on `*.github.io`, you must host the backend separately (Render/Railway/Fly/etc.) and set:
+
+```bash
+VITE_API_BASE_URL=https://your-backend-domain.com
+```
+
+Then rebuild `client/dist`.

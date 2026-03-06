@@ -6,9 +6,37 @@ let users = [
   { email: "user@test.com", password: "123456", role: "user" },
 ];
 
+router.post("/signup", (req, res) => {
+  const { email, password, role = "user" } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  const exists = users.find((u) => u.email === email);
+
+  if (exists) {
+    return res.status(409).json({ error: "User already exists" });
+  }
+
+  const newUser = {
+    email,
+    password,
+    role: role === "admin" ? "admin" : "user",
+  };
+
+  users.push(newUser);
+
+  res.status(201).json({
+    email: newUser.email,
+    role: newUser.role,
+    message: "Signup successful",
+  });
+});
+
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(email, "--email", password, "--pass");
+
   const user = users.find((u) => u.email === email && u.password === password);
 
   if (!user) {

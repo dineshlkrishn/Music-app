@@ -1,4 +1,4 @@
-import axios from "axios"
+import api from "../utils/api"
 import { useState, useEffect } from "react"
 
 export default function Dashboard() {
@@ -18,14 +18,14 @@ export default function Dashboard() {
         form.append("audio", audio)
         form.append("cover", cover)
 
-        await axios.post("/api/songs/upload", form)
+        await api.post("/api/songs/upload", form)
 
         alert("Song Uploaded")
 
     }
 
     useEffect(() => {
-        axios.get("/api/songs")
+        api.get("/api/songs")
             .then(res => setSongs(res.data))
     }, [])
 
