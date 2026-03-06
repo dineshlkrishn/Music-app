@@ -1,10 +1,20 @@
-# Node.js template
+# Music App
 
-This is a Node.js project.
+This project now serves both:
+- a backend API (`/api/*`)
+- a client page (`/`) from `client/dist/index.html`
 
-Add your [configuration](https://codesandbox.io/docs/projects/learn/setting-up/tasks) to optimize it for [CodeSandbox](https://codesandbox.io/p/dashboard).
+## Run locally
 
-## Resources
+```bash
+npm install
+npm start
+```
 
-- [CodeSandbox — Docs](https://codesandbox.io/docs/learn)
-- [CodeSandbox — Discord](https://discord.gg/Ggarp3pX5H)
+Open:
+- `http://localhost:5000/` → client UI
+- `http://localhost:5000/api/test` → backend health endpoint
+
+The client page performs live API communication by:
+- checking `/api/test`
+- posting login credentials to `/api/auth/login`
